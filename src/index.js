@@ -28,7 +28,7 @@ import 'react-image-lightbox/style.css'; // This only needs to be imported once 
 //   height: auto;
 //   margin-bottom: ${props => props.paddingBottom || 0}px;
 //   ${props => props.useLightBox && css`
-//   cursor: pointer; 
+//   cursor: pointer;
 //   `}
 // `;
 const ImgElement = ({
@@ -41,10 +41,9 @@ const ImgElement = ({
   <LazyLoad once height={paddingBottom}>
     <Imgix
       className={`lazyload blur-up ${className}`}
-      sizes="calc(10% - 20px)"
-      
+      sizes="100%"
       htmlAttributes={{
-        alt: 'Still Wind Photography - Best Vancouver Island Photography | Victoria BC',
+        alt,
         src: `${src}?blur=500&px=4&auto=format`,
         style: {
           maxWidth: `${imgMaxWidth}%`,
@@ -117,6 +116,7 @@ const ResponsiveGallery = ({
               <ImgElement
                 key={shortid.generate()}
                 src={img.src}
+                alt={img.alt}
                 imgMaxWidth={gallerySizes.imagesMaxWidth}
                 paddingBottom={gallerySizes.imagesPaddingBottom}
                 className={`${imagesStyle} ${img.imgClassName || ''}`}
