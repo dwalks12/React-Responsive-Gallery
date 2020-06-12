@@ -53,6 +53,7 @@
   "dependencies": {
     "lazysizes": "^5.2.2",
     "prop-types": "^15.7.2",
+    "react-dom": "^16.13.1",
     "react-image-lightbox": "^5.1.1",
     "react-imgix": "^9.0.2",
     "react-lazyload": "^2.6.8",
