@@ -1,6 +1,11 @@
 import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
+import Imgix from 'react-imgix';
+import LazyLoad from 'react-lazyload';
+import 'lazysizes';
+import 'lazysizes/plugins/attrchange/ls.attrchange';
+import 'lazysizes/plugins/blur-up/ls.blur-up';
 import shortid from 'shortid';
 import ImagesLightBox from './images-light-box';
 import { lightBoxReducer } from './reducers';
@@ -16,16 +21,42 @@ import {
 import { getGallerySizes, sortImagesArrayByOrder } from './utils/gallery';
 import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
 
-const ImgElment = styled.img.attrs(props => ({
-  src: props.imageSrc
-}))`
-  max-width: ${props => props.imgMaxWidth}%;
-  height: auto;
-  margin-bottom: ${props => props.paddingBottom || 0}px;
-  ${props => props.useLightBox && css`
-  cursor: pointer; 
-  `}
-`;
+// const ImgElment = styled.img.attrs(props => ({
+//   src: props.imageSrc
+// }))`
+//   max-width: ${props => props.imgMaxWidth}%;
+//   height: auto;
+//   margin-bottom: ${props => props.paddingBottom || 0}px;
+//   ${props => props.useLightBox && css`
+//   cursor: pointer; 
+//   `}
+// `;
+const ImgElement = ({
+  src,
+  alt,
+  imgMaxWidth,
+  paddingBottom,
+  className,
+}) => (
+  <LazyLoad once height={paddingBottom}>
+    <Imgix
+      className={`lazyload blur-up ${className}`}
+      sizes="calc(10% - 20px)"
+      
+      htmlAttributes={{
+        alt: 'Still Wind Photography - Best Vancouver Island Photography | Victoria BC',
+        src: `${src}?blur=500&px=4&auto=format`,
+        style: {
+          maxWidth: `${imgMaxWidth}%`,
+          height: 'auto',
+          marginBottom: `${paddingBottom || 0}px`,
+          cursor: 'pointer'
+        }
+      }}
+      src={`${src}?auto=format`}
+    />
+  </LazyLoad>
+);
 
 const ColElement = styled.div.attrs(props => ({
   src: props.imageSrc
@@ -83,9 +114,9 @@ const ResponsiveGallery = ({
             colPadding={gallerySizes.colsPadding}
           >
             {imagesCols[key].map((img, imgIndex) => (
-              <ImgElment
+              <ImgElement
                 key={shortid.generate()}
-                imageSrc={img.src}
+                src={img.src}
                 imgMaxWidth={gallerySizes.imagesMaxWidth}
                 paddingBottom={gallerySizes.imagesPaddingBottom}
                 className={`${imagesStyle} ${img.imgClassName || ''}`}
